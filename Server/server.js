@@ -4,6 +4,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
+import path from 'path';
 
 const app = express();
 
@@ -17,6 +19,19 @@ const connection = mysql.createConnection({
     password: "",
     database: "signup" // Replace with your actual database name
 });
+//multer
+const storage = multer.diskStorage({
+    destination: (req,file,cb) => {
+        cb(null,'public/imaged')
+    },
+    filename: (req,file,cb)=>{
+        cb(null,file.fieldname + "_" + Date.now() + path.extname(file.originalname));
+    }
+})
+
+const upload = multer({
+    storage: storage
+})
 
 connection.connect(function(err) {
     if (err) {
@@ -25,6 +40,7 @@ connection.connect(function(err) {
         console.log("Connected");
     }
 });
+
 
 app.post('/login',(req,res) => {
    const sql = "SELECT * FROM users WHERE email = ? AND password = ?";
@@ -39,6 +55,11 @@ app.post('/login',(req,res) => {
     }
    })
 })
+
+app.post('/create',upload.single('image'), (req,res) =>{
+    console.log(req.body);
+})
 app.listen(8081, () => {
+    console.log("Running");
     console.log("Running");
 });
