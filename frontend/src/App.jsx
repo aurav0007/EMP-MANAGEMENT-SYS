@@ -7,6 +7,8 @@ import Profile from './components/Profile';
 import Employee from './components/Employee';
 import Home from './components/Home';
 import AddEmployee from './components/AddEmployee';
+import EditEmployee from './components/EditEmployee';
+
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path = '/employee' element = {<Employee />}></Route>
         <Route path = '/profile' element = {<Profile />}></Route>
         <Route path = '/create' element = {<AddEmployee />}></Route>
+        <Route path = '/employeeEdit/:id' element = {<EditEmployee />}></Route>
+
       </Route>
       <Route path='/login' element={<Login></Login>}></Route>
     </Routes>
