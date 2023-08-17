@@ -10,15 +10,19 @@ function Login() {
 
   // Navigate hook
   const navigate = useNavigate();
- const [error,setError] = useState('');
+  //
+  axios.defaults.withCredentials = true;
+  //
+
+const [error,setError] = useState('');
 const handleSubmit = (event) => {
-    event.preventDefault(); // prevent Default Submission
-    axios.post('http://localhost:8081/login',values)
+    event.preventDefault();
+    axios.post('http://localhost:8081/login', values)
     .then(res => {
         if(res.data.Status === 'Success') {
-              navigate('/');
-        }else {
-            setError(res.data.Error);   
+            navigate('/');
+        } else {
+            setError(res.data.Error);
         }
     })
     .catch(err => console.log(err));

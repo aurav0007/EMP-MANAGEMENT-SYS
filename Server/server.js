@@ -6,10 +6,17 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import path from 'path';
+// import { verify } from 'crypto';
 
 const app = express();
 
-app.use(cors());
+app.use(cors(
+    {
+        origin: ["http://localhost:5173"],
+        methods: ["POST", "GET", "PUT","DELETE"],
+        credentials: true
+    }
+));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.static('public'));
@@ -42,7 +49,80 @@ connection.connect(function(err) {
     }
 });
 
+app.get('/getEmployee', (req,res) => {
+    const sql = "SELECT * FROM employee";
+    connection.query(sql,(err,result) => {
+        if(err) return res.json({Error:"Get Employee Error"});
+        return res.json({Status : "Success" ,Result: result});
+    })
+}) 
+app.get('/get/:id',(req,res)=>{
+    const id = req.params.id;
+    const sql = "SELECT * FROM employee WHERE id = ?";
+    connection.query(sql, [id], (err,result)=>{
+        if(err) return res.json({Error : "Error in getting info to update"});
+        return res.json({Status:"Success", Result:result});
+    })
 
+})
+app.put('/update/:id', (req,res)=>{
+    const id = req.params.id;
+    const sql = "UPDATE employee set salary = ? WHERE id = ?";
+    connection.query(sql, [req.body.salary, id] , (err,result) => {
+    if(err) return res.json({Error :"Error in updating"});
+    return res.json({Status :"Success"});
+    })
+})
+
+
+
+app.delete('/delete/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = "Delete FROM employee WHERE id = ?";
+    connection.query(sql, [id], (err, result) => {
+        if(err) return res.json({Error: "delete employee error in sql"});
+        return res.json({Status: "Success"})
+    })
+})
+ 
+const verifyUser = (req,res,next) =>{
+    const token = req.cookies.token;
+    if(!token) {
+        return res.json({Error : "you are not Authenticated"});
+
+    } else {
+        jwt.verify(token, "jwt-secret-key" , (err,decoded) => {
+            if(err) return res.json({Error : "Token Wrong"});
+            next();
+        })
+    }
+}
+app.get('/dashboard', verifyUser , (req,res) => {
+      return res.json({Status : "Success"});
+})
+
+app.get('/adminCount' , (req,res) =>{
+    const sql = "SELECT count(id) as admin from users";
+    connection.query(sql,(err,result) =>{
+        if(err) return res.json({Error : "Error in running query"});
+        return res.json( result);
+    })
+})
+
+app.get('/employeeCount' ,(req,res) => {
+    const sql = "SELECT count(id) as employee from employee";
+    connection.query(sql, (err,result) =>{
+        if(err) return res.json({Error : "Error in running query"});
+        return res.json(result);
+    })
+})
+app.get('/sumSalary' ,(req,res) => {
+    const sql = "SELECT sum(salary) as salary from employee";
+    connection.query(sql, (err,result) =>{
+        if(err) return res.json({Error : "Error in running query"});
+        return res.json(result);
+    })
+})
 app.post('/login',(req,res) => {
    const sql = "SELECT * FROM users WHERE email = ? AND password = ?";
    //run quesry
@@ -50,12 +130,22 @@ app.post('/login',(req,res) => {
     if(err) return res.json({Status: "Error in Server", Error: "Error in running query"});
     if(result.length > 0)
     {
+        // making logIN functionality as we login using jwt
+        const id = result[0].id;
+        const token = jwt.sign({id},"jwt-secret-key", {expiresIn: '1d'});
+        res.cookie('token' , token);
+
         return res.json({Status: "Success"})
     }else {
         return res.json({Status: "Error in Server", Error: "Wrong Email or Password"});
     }
    })
 })
+
+app.get('/logout' , (req,res) => {
+       res.clearCookie('token');
+       return res.json({Status : "Success"})
+}) 
 
 app.post('/create',upload.single('image'), (req, res) => {
     const sql = "INSERT INTO employee (`name`,`email`,`password`, `address`, `salary`,`image`) VALUES (?)";
@@ -76,39 +166,7 @@ app.post('/create',upload.single('image'), (req, res) => {
     } )
 })
 
-app.put('/update/:id', (req,res)=>{
-    const id = req.params.id;
-    const sql = "UPDATE employee set salary = ? WHERE id = ?";
-    connection.query(sql, [req.body.salary, id] , (err,result) => {
-    if(err) return res.json({Error :"Error in updating"});
-    return res.json({Status :"Success"});
-    })
-})
-app.get('/getEmployee', (req,res) => {
-    const sql = "SELECT * FROM employee";
-    connection.query(sql,(err,result) => {
-        if(err) return res.json({Error:"Get Employee Error"});
-        return res.json({Status : "Success" ,Result: result});
-    })
-})
 
-app.get('/get/:id',(req,res)=>{
-    const id = req.params.id;
-    const sql = "SELECT * FROM employee WHERE id = ?";
-    connection.query(sql, [id], (err,result)=>{
-        if(err) return res.json({Error : "Error in getting info to update"});
-        return res.json({Status:"Success", Result:result});
-    })
-
-})
-app.delete('/delete/:id' , (req,res) =>{
-    const id = req.params.id;
-    const sql = "DELETE from employee Where id=?";
-    connection.query(sql ,[id], (err,result) =>{
-        if(err) return res.json({Error : "Error in deleting"});
-        return res.json({Status : "Success"});
-    })
-})
 
 app.listen(8081, () => {
     console.log("Running");

@@ -1,10 +1,10 @@
 import React from 'react'
-import ProfileCard from './ProfileCard'
+
 
 function Profile() {
   return (
     <div>
-      <ProfileCard/>
+      Profile
     </div>
   )
 }

@@ -13,7 +13,7 @@ function ProfileCard({employee}) {
       } else {
         alert("Error")
       }
-      alert("Deleted");
+      
     })
     .catch(err => console.log(err));
   }

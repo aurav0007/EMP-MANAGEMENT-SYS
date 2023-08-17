@@ -7,6 +7,7 @@ import axios from "axios";
 function Employee() {
 
    const [data,setData] = useState([]);
+ 
   useEffect(() => {
    axios.get('http://localhost:8081/getEmployee')
    .then(res => {
@@ -16,6 +17,8 @@ function Employee() {
    })
    .catch(err => console.log(err));
   },[])
+
+
   return (
     <div className="px-2 py-3">
       <div className="d-flex justify-content-center">
