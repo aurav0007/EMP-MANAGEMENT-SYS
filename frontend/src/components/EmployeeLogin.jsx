@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import '../CSS/login.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-function Login() {
+function EmployeeLogin() {
     const [values, setValues] = useState({
         email: '',
         password: ''
@@ -17,10 +17,11 @@ function Login() {
 const [error,setError] = useState('');
 const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8081/login', values)
+    axios.post('http://localhost:8081/employeelogin', values)
     .then(res => {
         if(res.data.Status === 'Success') {
-            navigate('/');
+            const id = res.data.id;
+            navigate('/employeedetail/' + id);
         } else {
             setError(res.data.Error);
         }
@@ -31,11 +32,11 @@ const handleSubmit = (event) => {
     <div className='d-flex justify-content-center align-items-center vh-100 loginPage'>
             <div className='bg-white p-3 rounded w-25 border loginForm'>
                  <div className='text-danger'>
-                    {error && alert(error)}
+                    {error && error}
                  </div>
-                <h2 className='text-secondary text-center'>Admin Login</h2>
+                <h2 className='text-secondary text-center' >Employee Login</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className='mb-3 text-dark' >
+                    <div className='mb-3 text-dark'>
                         <label htmlFor="email"><strong>Email</strong></label>
                         <input type="email" placeholder='Enter Email' name='email' 
                           onChange={e => setValues({...values, email:e.target.value})} className='form-control rounded-0'/>
@@ -46,11 +47,11 @@ const handleSubmit = (event) => {
                          onChange={e => setValues({...values, password:e.target.value})} className='form-control rounded-0' />
                     </div>
                     <button type='submit' className='btn btn-success w-100 rounded-0'> Log in</button>
-                    <p className='text-dark text-center mt-1 p-1'>You are agree to our terms and policies</p>
+                    <p className='text-dark mt-1 p-1 text-center'>You are agree to our terms and policies</p>
                 </form>
             </div>
         </div>
   )
 }
 
-export default Login
+export default EmployeeLogin

@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import mysql from 'mysql';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -93,12 +93,14 @@ const verifyUser = (req,res,next) =>{
     } else {
         jwt.verify(token, "jwt-secret-key" , (err,decoded) => {
             if(err) return res.json({Error : "Token Wrong"});
+            req.id = decoded.id;
+            req.role = decoded.role;
             next();
         })
     }
 }
 app.get('/dashboard', verifyUser , (req,res) => {
-      return res.json({Status : "Success"});
+      return res.json({Status : "Success", Role : req.role ,id : req.id});
 })
 
 app.get('/adminCount' , (req,res) =>{
@@ -132,7 +134,7 @@ app.post('/login',(req,res) => {
     {
         // making logIN functionality as we login using jwt
         const id = result[0].id;
-        const token = jwt.sign({id},"jwt-secret-key", {expiresIn: '1d'});
+        const token = jwt.sign({role : "admin"},"jwt-secret-key", {expiresIn: '1d'});
         res.cookie('token' , token);
 
         return res.json({Status: "Success"})
@@ -141,6 +143,45 @@ app.post('/login',(req,res) => {
     }
    })
 })
+
+// employee login
+app.post('/employeelogin',(req,res) => {
+   const sql = "SELECT * FROM employee WHERE email = ?";
+   //run quesry
+   connection.query(sql, [req.body.email], (err,result) => {
+    if(err) return res.json({Status: "Error in Server", Error: "Error in running query"});
+    if(result.length > 0)
+    {
+        bcrypt.compare(req.body.password.toString(), result[0].password ,(err,response) =>
+        {
+            if(response) {
+                const id = result[0].id;
+                const token = jwt.sign({role : "employee" ,id:result[0].id},"jwt-secret-key", {expiresIn: '1d'});
+                res.cookie('token' , token);
+        
+                return res.json({Status: "Success" , id : result[0].id})
+            } 
+            else { 
+            return res.json({Error : "Wrong email or password"}); 
+            }
+
+        })
+        // making logIN functionality as we login using jwt
+       
+    }else {
+        return res.json({Status: "Error in Server", Error: "Wrong Email or Password"});
+    }
+   })
+})
+
+// app.get('/employee/:id', (req,res) => {
+//     const id = req.params.id;
+//     const sql = "SELECT * FROM employee WHERE id = ?";
+//     connection.query(sql, [id], (err,result)=>{
+//         if(err) return res.json({Error : "Error in getting info to update"});
+//         return res.json({Status:"Success", Result:result});
+//     })
+// })
 
 app.get('/logout' , (req,res) => {
        res.clearCookie('token');

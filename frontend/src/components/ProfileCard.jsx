@@ -19,16 +19,16 @@ function ProfileCard({employee}) {
   }
 
   return (
-    <div class="profile-card ">
-      <div className='img_div'>
+    <div class="pprofile-card ">
+      <div className='iimg_div'>
 
     <img
       src={`http://localhost:8081/imaged/` + employee.image}
       alt="Profile Image"
-      class="profile-image"
+      class="pprofile-image"
       />
       </div>
-    <div class="profile-content">
+    <div class="pprofile-content">
       <h3 class="mb-2">{employee.name}</h3>
       <hr></hr>
       <p>
@@ -38,7 +38,7 @@ function ProfileCard({employee}) {
       </p>
     </div>
        <hr></hr>
-    <div class="profile-buttons">
+    <div class="pprofile-buttons">
       <Link to={`/employeeEdit/` + employee.id} class="btn btn-primary btn-sm mr-2">Edit</Link>
       <button onClick={e => handleDelete(employee.id)} class="btn btn-danger btn-sm mx-2">Delete</button>
     </div>
