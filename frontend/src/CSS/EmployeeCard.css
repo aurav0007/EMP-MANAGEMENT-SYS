@@ -1,8 +1,5 @@
-/* *{
-    margin: none;
-    box-sizing: border-box;
-} */
-.container {
+
+.containerr {
     margin: auto;
     background-image: url('https://images.unsplash.com/photo-1691951171253-128bde131aaa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=872&q=80');
     background-size: cover;
@@ -18,7 +15,7 @@
 }
 
 
-.profile-card {
+.profile-cardd {
     height : 700px;
     width: 50%;
     max-width: 100%;
@@ -32,13 +29,13 @@
     justify-content: space-between;
     
   }
-  .img_div{
+  .img_diiv{
     display: flex;
     justify-content: center;
     width: 100%;
     /* height: 100px; */
   }
-  .profile-image {
+  .profile-imagee {
     width: 200px; /* Adjust the width to your preference */
     height: 200px; /* Adjust the height to match the width */
     border-radius: 50%;
@@ -47,14 +44,14 @@
     transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
   }
   
-  .profile-image:hover {
+  .profile-imagee:hover {
     border: 5px solid;
     border-color: rgb(140, 140, 140); /* Change border color on hover */
     transform: scale(1.35); /* Slightly scale up on hover */
   }
-  .profile-content {
+  .profile-contentt {
     margin-top: 20px;
   }
-  .profile-buttons {
+  .profile-buttonss {
     margin-top: 10px;
   }

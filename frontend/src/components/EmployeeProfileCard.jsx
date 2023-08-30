@@ -2,9 +2,9 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import '../CSS/EmployeeCard.css';
+import '../CSS/EmployeeCard.css';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
+
 function EmployeeProfileCard({employee}) {
     const navigate = useNavigate();
     const handleLogout = () => {
@@ -16,15 +16,15 @@ function EmployeeProfileCard({employee}) {
     }
 
   return (
-    <div className='container'>
+    <div className='containerr'>
 
-    <div class="profile-card bg-white">
-      <div className='img_div mb-4'>
+    <div class="profile-cardd bg-white">
+      <div className='img_diiv mb-4'>
 
     <img
       src={`http://localhost:8081/imaged/` + employee.image}
       alt="Profile Image"
-      class="profile-image"
+      class="profile-imagee"
       />
       </div>
 
@@ -34,14 +34,14 @@ function EmployeeProfileCard({employee}) {
       <div className='profile-Des px-4 py-0  text-center'>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Labore officiis, sint ad consequatur quam ex, quisquam voluptatum dignissimos repellat voluptas minus corrupti? Voluptas unde vel optio quidem modi labore praesentium, explicabo est sequi nostrum molestias, accusantium itaque, quisquam corporis? Unde.
       </div>
-        <div className='content'>
+        <div className='profile-contentt'>
              
             <p className="card-text text-center"><strong>Email:</strong>{employee.email}</p>
             <p className="card-text text-center"><strong>Address:</strong>{employee.address}</p>
             <p className="card-text text-center"><strong>Salary:</strong>{employee.salary}</p>
         </div>
 
-            <div className="d-flex justify-content-between buttons">
+            <div className="d-flex justify-content-between profile-buttonss ">
                 <button className="btn btn-primary">Edit</button>
                 <button onClick={handleLogout} className="btn btn-danger">Logout</button>
             </div>

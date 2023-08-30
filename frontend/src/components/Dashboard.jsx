@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate ,useParams} from 'react-router-dom'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import axios from 'axios';
 
 function Dashboard() {
     axios.defaults.withCredentials = true;
     const navigate = useNavigate();
+ 
     useEffect(() => {
     axios.get('http://localhost:8081/dashboard')
     .then(res => {
@@ -13,7 +14,8 @@ function Dashboard() {
         {
             if(res.data.Role === "admin")
             {
-                navigate('/');
+             
+                navigate('/'+1);
             }
             else {
                 const id = res.data.id;

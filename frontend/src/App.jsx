@@ -17,8 +17,8 @@ function App() {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path='/' element={<Dashboard></Dashboard>}>
-        <Route path ='' element ={<Home></Home>}></Route>
+        <Route path ='/' element={<Dashboard></Dashboard>}>
+        <Route path ='/:idd' element ={<Home></Home>}></Route>
         <Route path = '/employee' element = {<Employee />}></Route>
         <Route path = '/profile' element = {<Profile />}></Route>
         <Route path = '/create' element = {<AddEmployee />}></Route>

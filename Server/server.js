@@ -49,6 +49,24 @@ connection.connect(function(err) {
     }
 });
 
+// admin operations
+app.get('/getadmininfo' ,(req,res) => {
+    const sql = "SELECT * FROM users";
+    connection.query(sql,(err,result) =>{
+        if(err) res.json({Error: "Get User Detail Error"});
+        return res.json({Status : "Success" , Result: result});
+    })
+})
+
+app.delete('/admindelete/:id',(req,res) => {
+    const id = req.params.id;
+    const sql = "DELETE FROM users WHERE id = ?";
+    connection.query(sql,[id],(err,result) =>{
+        if(err) return res.json({Error : "Deletion admin error"});
+        return res.json({Status : "Success"});
+    })
+})
+// employee operation
 app.get('/getEmployee', (req,res) => {
     const sql = "SELECT * FROM employee";
     connection.query(sql,(err,result) => {
@@ -85,6 +103,8 @@ app.delete('/delete/:id', (req, res) => {
     })
 })
  
+
+
 const verifyUser = (req,res,next) =>{
     const token = req.cookies.token;
     if(!token) {
