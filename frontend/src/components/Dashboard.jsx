@@ -14,7 +14,6 @@ function Dashboard() {
         {
             if(res.data.Role === "admin")
             {
-             
                 navigate('/'+1);
             }
             else {

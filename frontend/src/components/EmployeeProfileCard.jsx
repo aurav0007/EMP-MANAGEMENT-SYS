@@ -42,7 +42,7 @@ function EmployeeProfileCard({employee}) {
         </div>
 
             <div className="d-flex justify-content-between profile-buttonss ">
-                <button className="btn btn-primary">Edit</button>
+            <Link to={`/employeeEditInDetail/` + employee.id} class="btn btn-primary">Edit</Link>
                 <button onClick={handleLogout} className="btn btn-danger">Logout</button>
             </div>
      

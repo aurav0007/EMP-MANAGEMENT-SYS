@@ -66,6 +66,14 @@ app.delete('/admindelete/:id',(req,res) => {
         return res.json({Status : "Success"});
     })
 })
+app.put('/updatee/:id', (req,res)=>{
+    const id = req.params.id;
+    const sql = "UPDATE employee set name = ?,email = ?,address = ?,salary = ? WHERE id = ?";
+    connection.query(sql, [req.body.name,req.body.email,req.body.address,req.body.salary, id] , (err,result) => {
+    if(err) return res.json({Error :"Error in updating"});
+    return res.json({Status :"Success"});
+    })
+})
 // employee operation
 app.get('/getEmployee', (req,res) => {
     const sql = "SELECT * FROM employee";

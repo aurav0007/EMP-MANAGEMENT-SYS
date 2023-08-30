@@ -11,6 +11,7 @@ import EditEmployee from './components/EditEmployee';
 import Start1 from './components/Start1';
 import EmployeeDetail from './components/EmployeeDetail';
 import EmployeeLogin from './components/EmployeeLogin';
+import EditEmployeeInDetail from './components/EditEmployeeInDetail';
 
 
 function App() {
@@ -28,7 +29,10 @@ function App() {
       <Route path='/login' element={<Login></Login>}></Route>
       <Route path='/start' element={<Start1></Start1>}></Route>
       <Route path='/employeelogin' element={<EmployeeLogin></EmployeeLogin>}></Route>
-      <Route path='/employeedetail/:id' element={<EmployeeDetail></EmployeeDetail>}></Route>
+      <Route path='/employeedetail/:id' element={<EmployeeDetail></EmployeeDetail>}>
+
+      </Route>
+        <Route path = '/employeeEditInDetail/:id' element = {<EditEmployeeInDetail />}></Route>
     </Routes>
     </BrowserRouter>
     
